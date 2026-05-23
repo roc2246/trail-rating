@@ -2,16 +2,16 @@
   "name": "trail-rating",
   "version": "0.1.0",
   "private": true,
-  "main": "packages/server/dist/index.js",
+  "main": "server/dist/index.js",
   "workspaces": [
-    "packages/*"
+    "*"
   ],
   "scripts": {
-    "build:server": "npm run -w packages/server build",
-    "build:client": "npm run -w packages/client build",
+    "build:server": "npm run -w server build",
+    "build:client": "npm run -w client build",
     "build": "npm run build:server && npm run build:client",
-    "start": "node packages/server/dist/index.js",
-    "dev": "npm run -w packages/server dev"
+    "start": "node server/dist/index.js",
+    "dev": "npm run -w server dev"
   },
   "dependencies": {
     "express": "^4.18.2"
