@@ -1,0 +1,40 @@
+import express from "express";
+import path from "path";
+import routes from "./routes";
+
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.use(express.json());
+app.use("/api", routes);
+
+// In development, proxy non-API requests to the Vite dev server.
+if (process.env.NODE_ENV === "development") {
+  // Require here so production build doesn't need the dev-only dependency.
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { createProxyMiddleware } = require("http-proxy-middleware");
+
+  app.use(
+    "/",
+    createProxyMiddleware({
+      target: "http://localhost:5173",
+      changeOrigin: true,
+      ws: true,
+      logLevel: "warn",
+    })
+  );
+} else {
+  // In production, serve the built client from packages/client/dist
+  const clientBuildPath = path.resolve(__dirname, "..", "..", "client", "dist");
+  app.use(express.static(clientBuildPath));
+
+  app.get("*", (_req, res) => {
+    res.sendFile(path.join(clientBuildPath, "index.html"));
+  });
+}
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+
+export default app;
