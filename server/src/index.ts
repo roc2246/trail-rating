@@ -1,11 +1,13 @@
 import express from "express";
 import path from "path";
 import routes from "./routes";
+import { connectDB } from "./models";
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
+
 app.use("/api", routes);
 
 // In development, proxy non-API requests to the Vite dev server.
@@ -25,16 +27,34 @@ if (process.env.NODE_ENV === "development") {
   );
 } else {
   // In production, serve the built client from packages/client/dist
-  const clientBuildPath = path.resolve(__dirname, "..", "..", "client", "dist");
+  const clientBuildPath = path.resolve(
+    __dirname,
+    "..",
+    "..",
+    "client",
+    "dist"
+  );
+
   app.use(express.static(clientBuildPath));
 
-  app.get("*", (_req, res) => {
+  app.get("*", function (_req, res) {
     res.sendFile(path.join(clientBuildPath, "index.html"));
   });
 }
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+async function startServer(): Promise<void> {
+  try {
+    await connectDB();
+
+    app.listen(port, function () {
+      console.log(`Server running on port ${port}`);
+    });
+  } catch (error) {
+    console.error("Failed to start server:", error);
+    process.exit(1);
+  }
+}
+
+startServer();
 
 export default app;
