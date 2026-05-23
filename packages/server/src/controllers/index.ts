@@ -1,1 +1,2 @@
-// controllers index file
+export * from './healthController';
+

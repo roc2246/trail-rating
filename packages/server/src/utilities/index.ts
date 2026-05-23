@@ -1,1 +1,2 @@
-// utilities index file
+export * from './logger';
+

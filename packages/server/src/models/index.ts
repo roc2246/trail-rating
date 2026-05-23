@@ -1,1 +1,2 @@
-// models index file
+export * from './health';
+

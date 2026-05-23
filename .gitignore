@@ -1,1 +1,8 @@
 node_modules
+packages/*/node_modules
+packages/*/dist
+dist
+.DS_Store
+.env
+.vscode
+npm-debug.log
