@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { z } from "zod";
-import { validateBody } from "../src/middleware";
+import { validateBody } from "../../middleware";
 
 describe("validateBody", function () {
   it("calls next if request body is valid", function () {
