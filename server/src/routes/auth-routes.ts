@@ -1,18 +1,19 @@
 import express from "express";
 import * as controller from "../controllers";
 import * as middleware from "../middleware";
+import * as validation from "../validation";
 
 const router = express.Router();
 
 router.post(
   "/register",
-  middleware.requireBodyFields(["username", "email", "password"]),
+  middleware.validateBody(validation.registerSchema),
   controller.registerController
 );
 
 router.post(
   "/login",
-  middleware.requireBodyFields(["email", "password"]),
+  middleware.validateBody(validation.loginSchema),
   controller.loginController
 );
 
