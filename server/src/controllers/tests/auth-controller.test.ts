@@ -1,16 +1,14 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { loginController } from "../../controllers";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { loginController } from "../auth-controller";
 import * as models from "../../models";
-
-vi.mock("../src/db", function () {
-  return {
-    loginUser: vi.fn(),
-  };
-});
 
 describe("loginController", function () {
   beforeEach(function () {
     vi.clearAllMocks();
+  });
+
+  afterEach(function () {
+    vi.restoreAllMocks();
   });
 
   it("returns 200 and login result on success", async function () {
@@ -26,7 +24,7 @@ describe("loginController", function () {
       json: vi.fn(),
     } as any;
 
-    vi.mocked(models.loginUser).mockResolvedValue({
+    vi.spyOn(models, "loginUser").mockResolvedValue({
       token: "fake-token",
       user: {
         email: "test@email.com",
@@ -57,7 +55,9 @@ describe("loginController", function () {
       json: vi.fn(),
     } as any;
 
-    vi.mocked(models.loginUser).mockRejectedValue(new Error("Invalid password"));
+    vi.spyOn(models, "loginUser").mockRejectedValue(
+      new Error("Invalid password")
+    );
 
     await loginController(req, res);
 

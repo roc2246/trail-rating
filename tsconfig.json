@@ -1,5 +1,5 @@
 {
   "extends": "./tsconfig.base.json",
-  "include": ["server/src/**/*", "client/src/**/*"],
+  "include": ["server/src/**/*", "client/src/**/*", "server/vitest.config.ts"],
   "exclude": ["node_modules", "*/dist", "dist"]
 }
