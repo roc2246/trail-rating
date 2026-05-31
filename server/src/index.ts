@@ -2,6 +2,7 @@ import express from "express";
 import path from "path";
 import routes from "./routes";
 import { connectDB } from "./db";
+import { errorMiddleware } from "./middleware";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -9,6 +10,8 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 
 app.use("/api", routes);
+
+app.use(errorMiddleware);
 
 // In development, proxy non-API requests to the Vite dev server.
 if (process.env.NODE_ENV === "development") {

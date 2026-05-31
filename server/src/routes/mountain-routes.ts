@@ -1,31 +1,22 @@
 import express from "express";
 import * as controller from "../controllers";
+import * as middleware from "../middleware";
 
 const router = express.Router();
 
-router.get(
-  "/",
-  controller.getAllMountainsController
-);
+router.get("/", controller.getAllMountainsController);
+router.get("/:id", controller.getMountainByIdController);
 
-router.get(
-  "/:id",
-  controller.getMountainByIdController
-);
-
-router.post(
-  "/",
-  controller.createMountainController
-);
-
+router.post("/", middleware.requireAuth, controller.createMountainController);
 router.patch(
   "/:id",
-  controller.updateMountainController
+  middleware.requireAuth,
+  controller.updateMountainController,
 );
-
 router.delete(
   "/:id",
-  controller.deleteMountainController
+  middleware.requireAuth,
+  controller.deleteMountainController,
 );
 
 export default router;
