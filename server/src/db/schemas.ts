@@ -30,13 +30,10 @@ const mountainSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
-export const Mountain = mongoose.model(
-  "Mountain",
-  mountainSchema
-);
+export const Mountain = mongoose.model("Mountain", mountainSchema);
 
 const trailSchema = new mongoose.Schema(
   {
@@ -54,12 +51,7 @@ const trailSchema = new mongoose.Schema(
 
     difficulty: {
       type: String,
-      enum: [
-        "Beginner",
-        "Intermediate",
-        "Advanced",
-        "Expert",
-      ],
+      enum: ["Beginner", "Intermediate", "Advanced", "Expert"],
       required: true,
     },
 
@@ -85,13 +77,10 @@ const trailSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
-export const Trail = mongoose.model(
-  "Trail",
-  trailSchema
-);
+export const Trail = mongoose.model("Trail", trailSchema);
 
 const userSchema = new mongoose.Schema(
   {
@@ -112,14 +101,21 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
+      select: false,
     },
   },
   {
     timestamps: true,
-  }
+
+    toJSON: {
+      transform: function (_doc, ret: any) {
+        delete ret.password;
+        delete ret.__v;
+
+        return ret;
+      },
+    },
+  },
 );
 
-export const User = mongoose.model(
-  "User",
-  userSchema
-);
+export const User = mongoose.model("User", userSchema);
